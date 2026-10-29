@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>rdesk: acesso remoto grátis para Windows</title>
+<meta name="description" content="Você digita o ID de 9 dígitos e, do outro lado, alguém aceita. Acesso remoto grátis para Windows, sem conta, com tudo cifrado de ponta a ponta.">
+<meta name="theme-color" content="#121314">
+<link rel="canonical" href="https://kickdown-sh.github.io/rdesk-app/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="rdesk">
+<meta property="og:title" content="rdesk: daqui, você digita o número. Lá, alguém aceita.">
+<meta property="og:description" content="Acesso remoto grátis para Windows. A conexão só abre quando quem está no outro computador clica em Aceitar, e tudo vai cifrado de ponta a ponta.">
+<meta property="og:url" content="https://kickdown-sh.github.io/rdesk-app/">
+<meta property="og:image" content="https://kickdown-sh.github.io/rdesk-app/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A tela dividida ao meio: à esquerda, Daqui, você digita o número; à direita, Lá, alguém aceita. Ou não. No meio, uma faixa estreita de bytes cifrados.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/icon-180.png">
+<link rel="preload" href="assets/fonts/archivo-var.woff2" as="font" type="font/woff2" crossorigin>
+<script>
+  // a cena de abertura só roda com movimento permitido
+  if (!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) document.documentElement.classList.add('movimento');
+</script>
+<link rel="stylesheet" href="styles.css">
+<script src="app.js" defer></script>
+</head>
+<body>
+
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
+<header class="barra">
+  <a class="marca" href="#topo" aria-label="rdesk, início da página"><img src="assets/icon-64.png" width="26" height="26" alt="">rdesk</a>
+  <nav aria-label="Principal">
+    <ul>
+      <li><a href="#como">Como conecta</a></li>
+      <li><a href="#seguranca">Segurança</a></li>
+      <li><a href="#recursos">Recursos</a></li>
+      <li><a class="btn" href="https://github.com/kickdown-sh/rdesk-releases/releases/latest/download/rdesk-setup.exe">Baixar</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="conteudo">
+
+  <!-- 1. A cena: as duas telas e a costura entre elas -->
+  <section class="hero split" id="topo" aria-labelledby="h-hero" data-estado="pedido">
+    <div class="costura" aria-hidden="true">
+      <div class="bytes"><span>A5 4D CA 18 25 30 BB 1D 6D 13 2C DE D6 23 7B 2E D9 1E 3F 72 1F CB 19 71 17 44 94 D6 49 3C 9D 5C 34 60 BE 31 20 1E 69 FE DA A0 EE E8 B9 99 7F 5C 7C 29 99 FD AF E5 93 25 3C D6 54 AF 4D FA D7 14 27 A0 AE B3 FE E9 23 2F 8A F2 21 1F 9E E4 91 C5 B1 0B EC B5 56 3B FC 1E 6F 93 42 7E CB C8 FE 29 55 E5 CD 8E 46 DC 8E D4 B7 C2 76 4D 2A 5A 4D 76 77 06 F8 5D 86 90 02 4A D6 BD A3 40 1B E9 C8 CB CC C9 35 F6 CD 1F 61 22 6A E1 53 38 AE 1A 34 00 4D 33 BA 0D 24 6A C0 4C 81 B1 BA F2 3E 3B F9 EE</span></div>
+      <span class="marcacao">só passam bytes cifrados</span>
+    </div>
+
+    <h1 class="hero-h" id="h-hero"><span class="l"><span>Daqui, você</span> <span>digita o número.</span></span> <span class="r"><span>Lá, alguém</span> <span>aceita. Ou não.</span></span></h1>
+    <p class="sr">Ilustração com dados de exemplo: neste computador, o ID 482 016 357 é digitado e aparece o código de verificação 7F3A0C; no outro, chega o pedido de acesso de Carla, com o mesmo código e os botões Aceitar e Recusar.</p>
+
+    <div class="tela-t l" aria-hidden="true"><p><span>Este computador</span><span class="st st-espera">Aguardando confirmação…</span><span class="st st-conectado">Conectado</span></p></div>
+    <div class="tela-t r" aria-hidden="true"><i class="faixa-laranja"></i><p><i class="ponto"></i><span>O outro computador</span><span class="st st-livre">Disponível</span><span class="st st-vivo">Sendo acessado</span></p></div>
+
+    <div class="cena l" aria-hidden="true">
+      <div>
+        <p class="cena-lbl">Acessar outro computador</p>
+        <div class="conectar">
+          <div class="campo-id"><span class="digitado" data-texto="482 016 357">482 016 357</span><i class="cursor"></i></div>
+          <span class="falso-btn">Conectar</span>
+        </div>
+        <p class="codigo"><span>Código de verificação</span><b>7F3A0C</b></p>
+        <p class="legenda-il so-estreito">Ilustração com ID, nome e código de exemplo.</p>
+      </div>
+    </div>
+
+    <div class="faixa-cena" aria-hidden="true">
+      <div class="bytes"><span>A5 4D CA 18 25 30 BB 1D 6D 13 2C DE D6 23 7B 2E D9 1E 3F 72 1F CB 19 71 17 44 94 D6 49 3C 9D 5C 34 60 BE 31 20 1E 69 FE DA A0 EE E8 B9 99 7F 5C 7C 29 99 FD AF E5 93 25 3C D6 54 AF 4D FA D7 14 27 A0 AE B3 FE E9 23 2F 8A F2 21 1F</span></div>
+      <span class="marcacao">só passam bytes cifrados</span>
+    </div>
+
+    <div class="cena r" aria-hidden="true">
+      <div class="pilha">
+        <div class="janela pedido">
+          <p class="t">Pedido de acesso</p>
+          <p><b>Carla</b> quer acessar este computador.</p>
+          <p class="codigo"><span>Código de verificação</span><b>7F3A0C</b></p>
+          <p class="dica">Confira com quem pediu, se quiser.</p>
+          <p class="botoes"><span class="falso-btn ok">Aceitar</span><span class="falso-btn neutro">Recusar</span></p>
+        </div>
+        <div class="janela acesso">
+          <p class="t"><i class="ponto vivo"></i>Este computador está sendo acessado</p>
+          <p class="conexao"><span>Carla</span><span>00:04</span></p>
+          <span class="falso-btn neutro">Encerrar acesso</span>
+        </div>
+      </div>
+      <p class="legenda-il so-largo">Ilustração com ID, nome e código de exemplo.</p>
+    </div>
+
+    <div class="inteira hero-banda">
+      <p class="hero-sub"><b>rdesk é acesso remoto grátis para Windows.</b> Sem conta e, por padrão, sem senha: a conexão só abre quando quem está no outro computador clica em Aceitar, e tudo o que passa entre as duas telas vai cifrado de ponta a ponta.</p>
+      <div class="hero-cta">
+        <a class="btn btn-g" href="https://github.com/kickdown-sh/rdesk-releases/releases/latest/download/rdesk-setup.exe">Baixar para Windows</a>
+        <p class="meta">rdesk-setup.exe · instale nos dois computadores</p>
+        <p class="aviso">O Windows pode pedir uma confirmação: <a href="#windows-avisa">veja como seguir</a>.</p>
+      </div>
+    </div>
+  </section>
+  <script>
+    // com movimento, a cena começa vazia; o app.js a conduz até o fim
+    if (document.documentElement.classList.contains('movimento')) {
+      var cena = document.getElementById('topo');
+      cena.setAttribute('data-estado', 'parado');
+      cena.querySelector('.digitado').textContent = '';
+    }
+  </script>
+
+  <!-- 2. Como conecta: cada momento, aqui e lá -->
+  <section class="como split" id="como" aria-labelledby="h-como">
+    <div class="costura" aria-hidden="true"></div>
+    <div class="inteira sec-cab">
+      <h2 id="h-como">Do número ao Aceitar, em três momentos.</h2>
+      <p class="lede">Os dois computadores precisam do rdesk. Pela internet, o relay embutido junta as duas pontas. Na rede local, o rdesk acha os computadores sozinho, ou você digita o IP.</p>
+    </div>
+    <div class="row cab">
+      <div class="tela-t l"><p>Aqui, no seu computador</p></div>
+      <div class="tela-t r"><p><i class="ponto"></i>Lá, no outro computador</p></div>
+    </div>
+    <ol class="momentos">
+      <li class="row">
+        <div class="l"><h3>Você digita o ID.</h3><p>Nove dígitos, que a pessoa lê na tela dela. Ao telefone, seis vira “meia”.</p></div>
+        <span class="meio" aria-hidden="true"><span class="marco">1</span></span>
+        <div class="r"><h3>A pessoa lê o número dela.</h3><p>Ele aparece em azul assim que o rdesk abre. É criado no primeiro uso e não muda.</p></div>
+      </li>
+      <li class="row">
+        <div class="l"><h3>Você pede para entrar.</h3><p>Clica em Conectar e espera. Na sua tela aparece um código de seis caracteres.</p></div>
+        <span class="meio" aria-hidden="true"><span class="marco">2</span></span>
+        <div class="r"><h3>Chega o pedido.</h3><p><q>Carla quer acessar este computador</q>, com o mesmo código. Sem o Aceitar, ninguém entra.</p></div>
+      </li>
+      <li class="row">
+        <div class="l"><h3>Você vê a tela de lá.</h3><p>Com mouse e teclado. Se o outro computador tiver mais de um monitor, você escolhe qual ver.</p></div>
+        <span class="meio" aria-hidden="true"><span class="marco">3</span></span>
+        <div class="r"><h3>Uma faixa laranja avisa.</h3><p>Ela fica no topo da tela enquanto houver alguém conectado, junto de uma janela com o nome de quem acessa. Quando o acesso termina, ela some.</p></div>
+      </li>
+    </ol>
+    <div class="row senha">
+      <div class="l"><h3>E se não houver ninguém lá para aceitar?</h3></div>
+      <div class="r"><p>O dono define uma senha no rdesk. Quem tiver a senha entra direto, sem Aceitar, com uma tentativa por conexão.</p></div>
+    </div>
+  </section>
+
+  <!-- 3. Segurança: o mesmo código nas duas telas -->
+  <section class="assinatura split" id="seguranca" aria-labelledby="h-seg">
+    <div class="costura" aria-hidden="true">
+      <div class="bytes"><span>9E E4 91 C5 B1 0B EC B5 56 3B FC 1E 6F 93 42 7E CB C8 FE 29 55 E5 CD 8E 46 DC 8E D4 B7 C2 76 4D 2A 5A 4D 76 77 06 F8 5D 86 90 02 4A D6 BD A3 40 1B E9 C8 CB CC C9 35 F6 CD 1F 61 22 6A E1 53 38 AE 1A 34 00 4D 33 BA 0D 24 6A C0 4C 81 B1 BA F2 3E 3B F9 EE A5 4D CA 18 25 30 BB 1D 6D 13 2C DE D6 23 7B 2E D9 1E 3F 72 1F CB 19 71 17 44 94 D6 49 3C 9D 5C 34 60 BE 31 20 1E 69 FE DA A0 EE E8 B9 99 7F 5C 7C 29 99 FD AF E5 93 25 3C D6 54 AF 4D FA D7 14 27 A0 AE B3 FE E9 23 2F 8A F2 21 1F 9E E4 91 C5 B1 0B EC B5 56 3B FC 1E 6F 93 42 7E CB C8 FE 29 55 E5 CD 8E 46 DC 8E D4 B7 C2 76 4D 2A 5A 4D 76 77 06 F8 5D 86 90 02 4A D6 BD A3 40 1B E9 C8 CB CC C9 35 F6 CD 1F 61 22 6A E1 53 38 AE 1A 34 00 4D 33 BA 0D 24 6A C0 4C 81 B1 BA F2 3E 3B F9 EE</span></div>
+      <span class="marcacao m2">o relay só repassa</span>
+    </div>
+    <div class="inteira sec-cab">
+      <h2 id="h-seg">Antes de aceitar, compare seis caracteres.</h2>
+      <div>
+        <p class="lede">O rdesk calcula um código a partir da chave desta conexão e mostra o mesmo código nas duas telas. Iguais: não tem ninguém no meio. Diferentes: recuse.</p>
+        <p class="legenda-il">Abaixo, uma ilustração com nome e código de exemplo.</p>
+      </div>
+    </div>
+    <div class="par">
+      <div class="l">
+        <div class="tela-t"><p>Na sua tela</p></div>
+        <p class="diz">Aguardando confirmação…</p>
+        <p class="gigante">7F3A0C</p>
+        <p class="fato"><b>O relay público só junta as duas pontas</b> e repassa bytes que não consegue ler. Quando a rede deixa, o vídeo vai direto entre as máquinas.</p>
+      </div>
+      <span class="meio" aria-hidden="true"><span class="marcacao">ChaCha20-Poly1305</span></span>
+      <div class="r">
+        <div class="tela-t"><p><i class="ponto"></i>Na tela de lá</p></div>
+        <p class="diz"><b>Carla</b> quer acessar este computador.</p>
+        <p class="gigante">7F3A0C</p>
+        <p class="fato"><b>Sem Aceitar, ninguém entra.</b> A chave desta máquina fica guardada no primeiro acesso; se mudar depois, o rdesk bloqueia.</p>
+      </div>
+    </div>
+    <div class="row nomes-cab">
+      <div class="l"><h3>Os algoritmos têm nome.</h3></div>
+      <div class="r"><p>Cada um protege uma parte da conexão.</p></div>
+    </div>
+    <dl class="nomes">
+      <div><dt>ChaCha20-Poly1305</dt><dd>Cifra o vídeo, o teclado e o mouse de ponta a ponta. O relay só repassa bytes cifrados e não lê a sessão.</dd></div>
+      <div><dt>SPAKE2</dt><dd>Protege a senha do acesso sem supervisão: sem ataque de dicionário offline, com uma tentativa por conexão e limite de taxa.</dd></div>
+      <div><dt>Noise XX + TOFU</dt><dd>A chave de cada máquina fica fixada no primeiro acesso. Se ela mudar depois, o acesso é bloqueado.</dd></div>
+      <div><dt>Código de verificação</dt><dd>Seis caracteres tirados da chave da conexão, iguais nas duas telas. Se forem diferentes, há alguém no meio.</dd></div>
+      <div><dt>A mesma versão dos dois lados</dt><dd>Se as versões forem diferentes, a conexão é recusada e pede atualização. O rdesk se atualiza sozinho.</dd></div>
+    </dl>
+  </section>
+
+  <!-- 4. Recursos: quase tudo tem dois lados -->
+  <section class="recursos split" id="recursos" aria-labelledby="h-rec">
+    <div class="costura" aria-hidden="true"></div>
+    <div class="inteira sec-cab">
+      <h2 id="h-rec">Quase tudo tem dois lados.</h2>
+      <p class="lede">O que você faz aqui aparece lá, e o dono continua no comando da máquina dele.</p>
+    </div>
+
+    <div class="row arquivos">
+      <div class="l">
+        <h3>Arquivos, em dois painéis.</h3>
+        <p>Este computador de um lado, o remoto do outro. Envie ou baixe nos dois sentidos, navegando pelas pastas, com conexão direta ou pelo relay.</p>
+        <p class="legenda-il">Ilustração com arquivos de exemplo.</p>
+        <div class="painel" aria-hidden="true">
+          <p class="painel-t"><span>Este computador</span><span>Documentos</span></p>
+          <ul>
+            <li class="pasta"><span>Fotos</span><span>pasta</span></li>
+            <li><span>orcamento.xlsx</span><span>48 KB</span></li>
+            <li><span>relatorio.pdf</span><span>1,2 MB</span></li>
+            <li><span>notas.txt</span><span>3 KB</span></li>
+          </ul>
+        </div>
+      </div>
+      <span class="meio" aria-hidden="true"><span class="ficha-arq">relatorio.pdf</span></span>
+      <div class="r" aria-hidden="true">
+        <div class="painel">
+          <p class="painel-t"><span>Máquina remota</span><span>Área de Trabalho</span></p>
+          <ul>
+            <li class="pasta"><span>Planilhas</span><span>pasta</span></li>
+            <li class="chegou"><span>relatorio.pdf</span><span>1,2 MB</span></li>
+            <li><span>leia-me.txt</span><span>2 KB</span></li>
+            <li><span>contrato.docx</span><span>86 KB</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="row area">
+      <div class="l">
+        <h3>Área de transferência.</h3>
+        <p>Ctrl+C aqui, Ctrl+V lá. E no sentido contrário também.</p>
+        <p class="atalho" aria-hidden="true"><kbd>Ctrl</kbd><span class="mais">+</span><kbd>C</kbd></p>
+      </div>
+      <div class="r" aria-hidden="true">
+        <p class="atalho"><kbd>Ctrl</kbd><span class="mais">+</span><kbd>V</kbd></p>
+      </div>
+    </div>
+
+    <div class="row som">
+      <div class="l">
+        <h3 class="sr">O som do computador remoto</h3>
+        <p class="frase">Você ouve aqui.</p>
+        <p>Já vem ligado. Mudo e volume ficam na barra da sessão, e só a aba que está na frente toca.</p>
+      </div>
+      <div class="r">
+        <p class="frase">O som toca lá.</p>
+        <p>O vídeo, o aviso do Windows, a chamada: o que sai nas caixas de som de lá sai nas suas.</p>
+      </div>
+    </div>
+
+    <div class="row dono">
+      <div class="l">
+        <h3 class="sr">O dono continua no comando</h3>
+        <p class="frase">Você mexe o mouse de lá.</p>
+        <p>Teclado e mouse vão pela mesma conexão cifrada.</p>
+      </div>
+      <div class="r">
+        <p class="frase">Se o dono mexer, o mouse é dele.</p>
+        <p>Quem está na máquina acessada tem prioridade, e a faixa laranja continua no topo da tela.</p>
+      </div>
+    </div>
+
+    <div class="row listas">
+      <div class="l">
+        <h3 class="lista-cab">Do seu lado</h3>
+        <ul class="lista">
+          <li><b>Abas de sessão</b><span>Várias máquinas abertas ao mesmo tempo, uma aba por máquina.</span></li>
+          <li><b>Vários monitores</b><span>Escolha qual tela da outra máquina ver.</span></li>
+          <li><b>Recentes e favoritos</b><span>Reconecta com um clique.</span></li>
+          <li><b>Rede local</b><span>Acha os computadores da LAN sem digitar endereço.</span></li>
+        </ul>
+      </div>
+      <div class="r">
+        <h3 class="lista-cab">Do lado de lá</h3>
+        <ul class="lista">
+          <li><b>Na bandeja, perto do relógio</b><span>Pode iniciar com o Windows e começar escondido.</span></li>
+          <li><b>Aviso de acesso</b><span>A faixa laranja e uma janela com quem está conectado.</span></li>
+          <li><b>Atualiza sozinho</b><span>Baixa e instala a versão nova, para as duas pontas ficarem na mesma versão.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Baixar: a costura termina aqui -->
+  <section class="baixar split" id="baixar" aria-labelledby="h-baixar">
+    <div class="costura" aria-hidden="true"></div>
+    <div class="inteira sec-cab">
+      <h2 id="h-baixar">O mesmo instalador nos dois computadores.</h2>
+      <p class="lede">Sem conta e sem cadastro. Quem acessa e quem é acessado usam o mesmo arquivo.</p>
+    </div>
+    <div class="row">
+      <div class="l"><h3>Baixe e abra.</h3><p>O rdesk mostra o seu ID e já fica pronto para acessar ou ser acessado.</p></div>
+      <div class="r"><h3>Peça para fazer o mesmo.</h3><p>Quem vai ser acessado instala o mesmo arquivo. É ele que aceita o seu pedido.</p></div>
+    </div>
+    <div class="inteira fecho">
+      <a class="btn btn-g" href="https://github.com/kickdown-sh/rdesk-releases/releases/latest/download/rdesk-setup.exe">Baixar para Windows</a>
+      <p class="meta">rdesk-setup.exe · cerca de 8 MB</p>
+      <div class="confianca">
+        <div id="windows-avisa">
+          <h3>O Windows pode avisar</h3>
+          <p>O instalador ainda não tem assinatura digital, então o SmartScreen pode mostrar “O Windows protegeu o computador” e dizer que o editor é desconhecido.</p>
+          <p>Para seguir, clique em <b>Mais informações</b> e depois em <b>Executar assim mesmo</b>.</p>
+        </div>
+        <div>
+          <h3>Quer conferir o arquivo?</h3>
+          <p>No PowerShell, <code>Get-FileHash .\rdesk-setup.exe</code> mostra o SHA-256 do que você baixou. Compare com o arquivo <code>checksums-sha256.txt</code> publicado junto de cada versão na <a href="https://github.com/kickdown-sh/rdesk-releases/releases/latest">página da release</a>, que também traz as notas da versão.</p>
+        </div>
+        <p class="uso">Use só em computadores seus ou com autorização de quem está neles.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="rodape">
+  <p>rdesk · acesso remoto para Windows · © 2026</p>
+  <ul>
+    <li><a href="https://github.com/kickdown-sh/rdesk-releases/releases">Releases no GitHub</a></li>
+    <li><a href="#topo">Voltar ao topo</a></li>
+  </ul>
+</footer>
+
+</body>
+</html>
